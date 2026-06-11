@@ -14,6 +14,15 @@ try:
 except:
     plt.style.use('ggplot')
 
+plt.rcParams.update({
+    'font.size': 13,
+    'axes.titlesize': 15,
+    'axes.labelsize': 13,
+    'xtick.labelsize': 12,
+    'ytick.labelsize': 12,
+    'legend.fontsize': 12,
+})
+
 BASE = "/Users/dashing_dm/Documents/Firmware/report_assets"
 OUT = f"{BASE}/graphs"
 
@@ -159,7 +168,7 @@ ax.scatter(seqs, temps, c=color_list, s=60, zorder=5)
 ax.plot(seqs, temps, color='gray', alpha=0.4, linewidth=1)
 for seq, fname in event_seqs:
     ax.axvline(x=seq, color='red', linestyle='--', alpha=0.7, linewidth=1)
-    ax.annotate(f'→{fname}', xy=(seq, max(temps)*0.95), fontsize=8, color='red', rotation=90)
+    ax.annotate(f'→{fname}', xy=(seq, max(temps)*0.95), fontsize=12, color='red', rotation=90)
 patches = [mpatches.Patch(color=v, label=k) for k,v in colors.items()]
 ax.legend(handles=patches)
 ax.set_xlabel("Sequence Number")
@@ -227,7 +236,7 @@ axes[5].plot(h_seq, h_temp, color='steelblue', linewidth=1.5)
 axes[5].set_title("Temperature (Host Sim)")
 axes[5].set_xlabel("Seq"); axes[5].set_ylabel("°C")
 
-fig.suptitle("ECU Sensor Dashboard — FreeRTOS Firmware + Host Simulator", fontsize=13, fontweight='bold')
+fig.suptitle("ECU Sensor Dashboard — FreeRTOS Firmware + Host Simulator", fontsize=16, fontweight='bold')
 fig.tight_layout()
 fig.savefig(f"{OUT}/sensor_dashboard.png", dpi=150)
 plt.close(fig)

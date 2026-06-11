@@ -8,7 +8,13 @@ from matplotlib.patches import FancyBboxPatch
 
 OUT = "/Users/dashing_dm/Documents/Firmware/report_assets/flowcharts"
 
-def draw_box(ax, x, y, w, h, label, color='#2980b9', fontsize=9, shape='rect'):
+import matplotlib
+plt.rcParams.update({
+    'font.size': 12,
+    'axes.titlesize': 14,
+})
+
+def draw_box(ax, x, y, w, h, label, color='#2980b9', fontsize=11, shape='rect'):
     if shape == 'diamond':
         # Draw diamond
         cx, cy = x, y
@@ -32,7 +38,7 @@ def arrow_down(ax, x, y_start, y_end, label='', color='#555'):
     ax.annotate('', xy=(x, y_end), xytext=(x, y_start),
                 arrowprops=dict(arrowstyle='->', color=color, lw=1.5))
     if label:
-        ax.text(x+0.15, (y_start+y_end)/2, label, fontsize=8, color=color, va='center')
+        ax.text(x+0.15, (y_start+y_end)/2, label, fontsize=11, color=color, va='center')
 
 def arrow_to(ax, x1, y1, x2, y2, label='', color='#555', dashed=False):
     ls = 'dashed' if dashed else 'solid'
@@ -40,14 +46,14 @@ def arrow_to(ax, x1, y1, x2, y2, label='', color='#555', dashed=False):
                 arrowprops=dict(arrowstyle='->', color=color, lw=1.5, linestyle=ls))
     if label:
         mx, my = (x1+x2)/2, (y1+y2)/2
-        ax.text(mx+0.1, my+0.1, label, fontsize=8, color=color)
+        ax.text(mx+0.1, my+0.1, label, fontsize=11, color=color)
 
 # ---- main_flow.png ----
 fig, ax = plt.subplots(figsize=(6, 12))
 ax.set_xlim(0, 6)
 ax.set_ylim(0, 12)
 ax.axis('off')
-ax.set_title("main() Startup Flow", fontsize=12, fontweight='bold')
+ax.set_title("main() Startup Flow", fontsize=14, fontweight='bold')
 
 steps = [
     (3, 11, 2.5, 0.6, "console_init()\nUART / semihosting ready", '#27ae60', 'rect'),
@@ -72,7 +78,7 @@ ax.annotate('', xy=(3, 3.1), xytext=(3, 2.5),
             arrowprops=dict(arrowstyle='->', color='#1a5276', lw=1.5))
 ax.annotate('', xy=(4.6, 3.5), xytext=(3, 2.5),
             arrowprops=dict(arrowstyle='->', color='#1a5276', lw=1.5, linestyle='dashed'))
-ax.text(5.0, 3.5, "∞ loop", fontsize=9, color='#1a5276', va='center')
+ax.text(5.0, 3.5, "∞ loop", fontsize=12, color='#1a5276', va='center')
 
 fig.tight_layout()
 fig.savefig(f"{OUT}/main_flow.png", dpi=150)
@@ -84,7 +90,7 @@ fig, ax = plt.subplots(figsize=(8, 13))
 ax.set_xlim(0, 8)
 ax.set_ylim(0, 13)
 ax.axis('off')
-ax.set_title("SensorTask Flow", fontsize=12, fontweight='bold')
+ax.set_title("SensorTask Flow", fontsize=14, fontweight='bold')
 
 draw_box(ax, 4, 12.2, 2.5, 0.5, "START", '#27ae60', shape='round')
 draw_box(ax, 4, 11.2, 3.2, 0.6, "xSemaphoreTake(\n  xSensorKickSem, MAX_DELAY)", '#2980b9')
@@ -116,7 +122,7 @@ ax.annotate('', xy=(0.8, 11.2), xytext=(0.8, 3.8),
             arrowprops=dict(arrowstyle='->', color='#555', lw=1.5))
 ax.plot([0.8, 4-1.0], [3.8, 3.8], color='#555', lw=1.5)
 ax.plot([0.8, 4-1.6], [11.2, 11.2], color='#555', lw=1.5)
-ax.text(0.2, 7.5, "loop", fontsize=8, color='#555', va='center', rotation=90)
+ax.text(0.2, 7.5, "loop", fontsize=11, color='#555', va='center', rotation=90)
 
 fig.tight_layout()
 fig.savefig(f"{OUT}/sensor_task_flow.png", dpi=150)
@@ -128,7 +134,7 @@ fig, ax = plt.subplots(figsize=(7, 11))
 ax.set_xlim(0, 7)
 ax.set_ylim(0, 11)
 ax.axis('off')
-ax.set_title("WatchdogTask Flow", fontsize=12, fontweight='bold')
+ax.set_title("WatchdogTask Flow", fontsize=14, fontweight='bold')
 
 draw_box(ax, 3.5, 10.3, 2.0, 0.5, "START", '#27ae60', shape='round')
 draw_box(ax, 3.5, 9.3, 3.5, 0.6, "xEventGroupWaitBits(\n  EVT_S|EVT_P|EVT_L\n  wait_all=true, 1000ms)", '#2980b9')
@@ -150,7 +156,7 @@ ax.plot([3.5-1.0, 0.5], [4.4, 4.4], color='#555', lw=1.5)
 ax.plot([0.5, 0.5], [4.4, 9.3], color='#555', lw=1.5)
 ax.annotate('', xy=(3.5-1.75, 9.3), xytext=(0.5, 9.3),
             arrowprops=dict(arrowstyle='->', color='#555', lw=1.5))
-ax.text(0.2, 7, "loop", fontsize=8, color='#555', va='center', rotation=90)
+ax.text(0.2, 7, "loop", fontsize=11, color='#555', va='center', rotation=90)
 
 fig.tight_layout()
 fig.savefig(f"{OUT}/watchdog_flow.png", dpi=150)
@@ -162,7 +168,7 @@ fig, ax = plt.subplots(figsize=(12, 8))
 ax.set_xlim(0, 12)
 ax.set_ylim(0, 8)
 ax.axis('off')
-ax.set_title("Fault Injection Flow — DiagnosticsTask", fontsize=12, fontweight='bold')
+ax.set_title("Fault Injection Flow — DiagnosticsTask", fontsize=14, fontweight='bold')
 
 # Top
 draw_box(ax, 6, 7.3, 3.5, 0.5, "UART receives 'fault X'", '#2980b9', shape='rect')
@@ -189,7 +195,7 @@ for bx in [1.5, 4.2, 7.0, 10.0]:
     arrow_down(ax, bx, 4.4, 3.5)
 
 # Bottom note
-draw_box(ax, 6, 1.8, 8, 0.8, "xTaskNotify / global fault_mode flag protects all state changes\nAll tasks check fault_mode on each iteration", '#1a5276', fontsize=9)
+draw_box(ax, 6, 1.8, 8, 0.8, "xTaskNotify / global fault_mode flag protects all state changes\nAll tasks check fault_mode on each iteration", '#1a5276', fontsize=11)
 for bx in [1.5, 4.2, 7.0, 10.0]:
     arrow_to(ax, bx, 2.9, 6, 2.2, "", '#aaa')
 
