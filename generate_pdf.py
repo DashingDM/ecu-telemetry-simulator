@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate academic PDF: HPC-style cover + two-column body, no date."""
+"""Generate academic PDF: two-column body, no cover page."""
 
 import os, re
 from reportlab.lib.pagesizes import letter
@@ -9,8 +9,9 @@ from reportlab.lib import colors
 from reportlab.platypus import (
     BaseDocTemplate, PageTemplate, Frame,
     Paragraph, Spacer, Image, Table, TableStyle,
-    HRFlowable, Preformatted, PageBreak, NextPageTemplate
+    HRFlowable, PageBreak, NextPageTemplate
 )
+from reportlab.platypus.flowables import Preformatted
 from reportlab.lib.enums import TA_LEFT, TA_CENTER, TA_JUSTIFY
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -36,27 +37,31 @@ IMAGE_MAP = {
     "fault_demo.png":                  "report_assets/graphs/fault_demo.png",
 }
 
+# Images that are complex (arrows, diagrams) — render full page width
+WIDE_IMAGES = {
+    "system_architecture.png",
+    "ipc_diagram.png",
+    "fault_injection_flow.png",
+    "sensor_dashboard.png",
+    "memory_map.png",
+}
+
 # ── geometry ───────────────────────────────────────────────────────────────────
-PW, PH   = letter
-LM = RM  = 0.75 * inch
-TM       = 1.0  * inch
-BM       = 0.85 * inch
-COL_GAP  = 0.25 * inch
-COL_W    = (PW - LM - RM - COL_GAP) / 2   # ≈ 3.375 in
+PW, PH  = letter
+LM = RM = 0.75 * inch
+TM      = 1.0  * inch
+BM      = 0.85 * inch
+COL_GAP = 0.25 * inch
+COL_W   = (PW - LM - RM - COL_GAP) / 2   # ≈ 3.375 in
+FULL_W  = PW - LM - RM                    # ≈ 7.0 in
+
+# characters that fit in a column at 7pt Courier (≈ 56 chars)
+CODE_COLS = 56
 
 # ── styles ─────────────────────────────────────────────────────────────────────
 def S(name, **kw):
     return ParagraphStyle(name, **kw)
 
-# cover
-CVR_TITLE = S("CvrTitle", fontName="Times-Bold",   fontSize=22, leading=28,
-              alignment=TA_CENTER, spaceAfter=10)
-CVR_SUB   = S("CvrSub",   fontName="Times-Roman",  fontSize=12, leading=16,
-              alignment=TA_CENTER, spaceAfter=4)
-CVR_SUBB  = S("CvrSubB",  fontName="Times-Bold",   fontSize=12, leading=16,
-              alignment=TA_CENTER, spaceAfter=4)
-
-# body
 BODY   = S("Body",   fontName="Times-Roman",      fontSize=9,  leading=12,
            alignment=TA_JUSTIFY, spaceAfter=5)
 ABST_H = S("AbstH",  fontName="Times-Bold",       fontSize=10, leading=13,
@@ -84,6 +89,14 @@ REF    = S("Ref",    fontName="Times-Roman",        fontSize=8,  leading=10,
 TCELL  = S("TC",     fontName="Times-Roman",        fontSize=8,  leading=10)
 TCELLH = S("TCH",    fontName="Times-Bold",         fontSize=8,  leading=10)
 
+# Title block styles (replaces cover page — sits at top of first body page)
+HDR_TITLE = S("HdrTitle", fontName="Times-Bold",  fontSize=18, leading=22,
+               alignment=TA_CENTER, spaceAfter=6)
+HDR_AUTH  = S("HdrAuth",  fontName="Times-Roman", fontSize=11, leading=14,
+               alignment=TA_CENTER, spaceAfter=2)
+HDR_AFF   = S("HdrAff",   fontName="Times-Italic",fontSize=9,  leading=12,
+               alignment=TA_CENTER, spaceAfter=10)
+
 _fig_counter = [0]
 _sec_num     = [0]
 
@@ -105,6 +118,16 @@ def _inline(text):
         text = text.replace(_esc(k), v)
     return text
 
+def _wrap_code(lines):
+    """Truncate lines that exceed column width to prevent overflow."""
+    out = []
+    for line in lines:
+        if len(line) > CODE_COLS:
+            out.append(line[:CODE_COLS - 1] + "↩")
+        else:
+            out.append(line)
+    return out
+
 def _resolve(fname):
     base = os.path.basename(fname)
     if base in IMAGE_MAP:
@@ -113,13 +136,17 @@ def _resolve(fname):
     return p if os.path.exists(p) else None
 
 def _make_image(path, caption=None):
+    base = os.path.basename(path)
     p = _resolve(path)
     if not p or not os.path.exists(p):
         return []
+    wide = base in WIDE_IMAGES
+    max_w = FULL_W if wide else COL_W
+    max_h = 3.8 * inch if wide else 3.2 * inch
     try:
         img = Image(p)
         iw, ih = img.imageWidth, img.imageHeight
-        scale  = min(COL_W / iw, 3.2 * inch / ih, 1.0)
+        scale  = min(max_w / iw, max_h / ih, 1.0)
         img.drawWidth  = iw * scale
         img.drawHeight = ih * scale
         img.hAlign = "CENTER"
@@ -132,7 +159,7 @@ def _make_image(path, caption=None):
     except Exception:
         return [Paragraph(f"[{os.path.basename(path)}]", CAPTION)]
 
-def _make_table(lines):
+def _make_table(lines, width=COL_W):
     rows = []
     for line in lines:
         line = line.strip().strip("|")
@@ -145,7 +172,7 @@ def _make_table(lines):
     for r in rows:
         while len(r) < ncols:
             r.append("")
-    cw = COL_W / ncols
+    cw = width / ncols
     data = []
     for ri, r in enumerate(rows):
         st = TCELLH if ri == 0 else TCELL
@@ -163,20 +190,15 @@ def _make_table(lines):
     return t
 
 # ── page callbacks ─────────────────────────────────────────────────────────────
-def _cover_cb(canvas, doc):
-    pass  # no header/footer on cover
-
-def _body_cb(canvas, doc):
+def _on_page(canvas, doc):
     canvas.saveState()
     canvas.setFont("Times-Roman", 8)
     canvas.setFillColor(colors.HexColor("#444444"))
     canvas.setStrokeColor(colors.HexColor("#888888"))
     canvas.setLineWidth(0.4)
-    # header
     canvas.line(LM, PH - TM + 10, PW - RM, PH - TM + 10)
     canvas.drawString(LM, PH - TM + 13, "Real-Time Vehicle Telemetry ECU Simulator")
     canvas.drawRightString(PW - RM, PH - TM + 13, "Dharm Mehta")
-    # footer
     canvas.line(LM, BM - 8, PW - RM, BM - 8)
     canvas.drawCentredString(PW / 2, BM - 18, str(doc.page))
     canvas.restoreState()
@@ -190,36 +212,30 @@ def _build_doc():
         title="Real-Time Vehicle Telemetry ECU Simulator",
         author="Dharm Mehta",
     )
-    # cover: single full-width frame
-    cover_frame = Frame(LM, BM, PW - LM - RM, PH - TM - BM, id="cover")
-    # body: two columns
+    # First page: full-width title block + two columns below
+    title_frame = Frame(LM, PH - TM - 1.4*inch, FULL_W, 1.3*inch, id="title_band")
+    col1_p1 = Frame(LM,                    BM, COL_W, PH - TM - BM - 1.4*inch, id="col1_p1")
+    col2_p1 = Frame(LM + COL_W + COL_GAP, BM, COL_W, PH - TM - BM - 1.4*inch, id="col2_p1")
+    # Remaining pages: two full-height columns
     col1 = Frame(LM,                    BM, COL_W, PH - TM - BM, id="col1")
     col2 = Frame(LM + COL_W + COL_GAP, BM, COL_W, PH - TM - BM, id="col2")
 
     doc.addPageTemplates([
-        PageTemplate(id="Cover",     frames=[cover_frame], onPage=_cover_cb),
-        PageTemplate(id="TwoColumn", frames=[col1, col2],  onPage=_body_cb),
+        PageTemplate(id="FirstPage",  frames=[title_frame, col1_p1, col2_p1], onPage=_on_page),
+        PageTemplate(id="TwoColumn",  frames=[col1, col2],                    onPage=_on_page),
     ])
     return doc
 
-# ── cover page ─────────────────────────────────────────────────────────────────
-def cover_page():
-    items = []
-    items.append(Spacer(1, 1.8 * inch))
-    items.append(Paragraph("Real-Time Vehicle Telemetry ECU Simulator", CVR_TITLE))
-    items.append(Spacer(1, 2.5 * inch))
-    items.append(Paragraph("Submitted To:", CVR_SUB))
-    items.append(Spacer(1, 0.12 * inch))
-    items.append(Paragraph("Embedded Systems / Real-Time Systems", CVR_SUBB))
-    items.append(Paragraph("Northeastern University", CVR_SUB))
-    items.append(Spacer(1, 1.5 * inch))
-    items.append(Paragraph("Submitted By:", CVR_SUB))
-    items.append(Spacer(1, 0.12 * inch))
-    items.append(Paragraph("Dharm Mehta", CVR_SUBB))
-    items.append(Paragraph("mehta.dhar@northeastern.edu", CVR_SUB))
-    items.append(NextPageTemplate("TwoColumn"))
-    items.append(PageBreak())
-    return items
+# ── title block (top of page 1, full width) ────────────────────────────────────
+def title_block():
+    return [
+        Paragraph("Real-Time Vehicle Telemetry ECU Simulator", HDR_TITLE),
+        Paragraph("Dharm Mehta", HDR_AUTH),
+        Paragraph("Northeastern University &nbsp;·&nbsp; mehta.dhar@northeastern.edu", HDR_AFF),
+        HRFlowable(width="100%", thickness=0.5, color=colors.black,
+                   spaceAfter=0, spaceBefore=0),
+        NextPageTemplate("TwoColumn"),
+    ]
 
 # ── markdown parser ────────────────────────────────────────────────────────────
 _SKIP = {"table of contents"}
@@ -257,7 +273,8 @@ def parse(md_text):
                 in_code  = True
                 code_buf = []
             else:
-                story.append(Preformatted("\n".join(code_buf), CODE))
+                wrapped = _wrap_code(code_buf)
+                story.append(Preformatted("\n".join(wrapped), CODE))
                 in_code = False
             i += 1; continue
         if in_code:
@@ -289,7 +306,7 @@ def parse(md_text):
             else:
                 i += 1; continue
 
-        # H1 — skip (on cover)
+        # H1 — skip (in title block)
         if re.match(r"^# [^#]", line):
             i += 1; continue
 
@@ -332,7 +349,7 @@ def parse(md_text):
             story.append(Spacer(1, 3))
             i += 1; continue
 
-        # skip meta lines (Student / Email / Course / Institution / Date)
+        # skip meta lines
         if re.match(r"^\*\*(Student|Email|Course|Institution|Date)\b", line):
             i += 1; continue
 
@@ -383,7 +400,7 @@ def main():
         md = f.read()
 
     doc   = _build_doc()
-    story = cover_page() + parse(md)
+    story = title_block() + parse(md)
     doc.build(story)
     print(f"PDF written: {OUTPUT_PDF}")
 
