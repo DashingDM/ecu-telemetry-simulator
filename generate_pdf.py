@@ -113,7 +113,7 @@ def _wrap_code(lines):
     out = []
     for line in lines:
         if len(line) > CODE_COLS:
-            out.append(line[:CODE_COLS - 1] + "↩")
+            out.append(line[:CODE_COLS - 1] + "\\")
         else:
             out.append(line)
     return out
