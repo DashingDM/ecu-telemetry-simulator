@@ -3,7 +3,7 @@
 **Student:** Dharm Mehta
 **Email:** mehta.dhar@northeastern.edu
 **Course:** Embedded Systems / Real-Time Systems
-**Institution:** Northeastern University, Khoury College of Computer Sciences
+**Institution:** Northeastern University
 **Date:** August 2025
 
 ---
