@@ -395,9 +395,7 @@ def title_block():
         TITLE))
     items.append(Spacer(1, 6))
     items.append(Paragraph("Dharm Mehta", AUTH))
-    items.append(Paragraph(
-        "Khoury College of Computer Sciences, Northeastern University, Boston, MA",
-        AFF))
+    items.append(Paragraph("Northeastern University, Boston, MA", AFF))
     items.append(Paragraph("mehta.dhar@northeastern.edu", AFF))
     items.append(HRFlowable(width="100%", thickness=0.5, color=colors.black,
                              spaceBefore=4, spaceAfter=6))
