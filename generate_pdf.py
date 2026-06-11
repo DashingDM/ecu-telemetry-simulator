@@ -37,14 +37,6 @@ IMAGE_MAP = {
     "fault_demo.png":                  "report_assets/graphs/fault_demo.png",
 }
 
-# Images that are complex (arrows, diagrams) — render full page width
-WIDE_IMAGES = {
-    "system_architecture.png",
-    "ipc_diagram.png",
-    "fault_injection_flow.png",
-    "sensor_dashboard.png",
-    "memory_map.png",
-}
 
 # ── geometry ───────────────────────────────────────────────────────────────────
 PW, PH  = letter
@@ -140,9 +132,8 @@ def _make_image(path, caption=None):
     p = _resolve(path)
     if not p or not os.path.exists(p):
         return []
-    wide = base in WIDE_IMAGES
-    max_w = FULL_W if wide else COL_W
-    max_h = 3.8 * inch if wide else 3.2 * inch
+    max_w = COL_W
+    max_h = 3.2 * inch
     try:
         img = Image(p)
         iw, ih = img.imageWidth, img.imageHeight
