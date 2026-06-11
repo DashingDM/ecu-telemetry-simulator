@@ -67,9 +67,7 @@ SSEC   = S("SSec",   fontName="Times-BoldItalic", fontSize=9,  leading=12,
 SSSEC  = S("SSSec",  fontName="Times-Italic",     fontSize=9,  leading=12,
            spaceBefore=4, spaceAfter=2)
 CODE   = S("Code",   fontName="Courier",           fontSize=7,  leading=9,
-           backColor=colors.HexColor("#f6f6f6"),
-           borderColor=colors.HexColor("#cccccc"), borderWidth=0.4,
-           borderPadding=4, spaceBefore=3, spaceAfter=5)
+           spaceBefore=0, spaceAfter=0)
 BULLET = S("Bullet", fontName="Times-Roman",       fontSize=9,  leading=12,
            leftIndent=10, spaceAfter=2)
 CAPTION= S("Caption",fontName="Times-Italic",      fontSize=8,  leading=10,
@@ -265,7 +263,19 @@ def parse(md_text):
                 code_buf = []
             else:
                 wrapped = _wrap_code(code_buf)
-                story.append(Preformatted("\n".join(wrapped), CODE))
+                pre = Preformatted("\n".join(wrapped), CODE)
+                t = Table([[pre]], colWidths=[COL_W - 8])
+                t.setStyle(TableStyle([
+                    ("BACKGROUND", (0,0), (-1,-1), colors.HexColor("#f6f6f6")),
+                    ("BOX",        (0,0), (-1,-1), 0.4, colors.HexColor("#cccccc")),
+                    ("TOPPADDING",    (0,0), (-1,-1), 4),
+                    ("BOTTOMPADDING", (0,0), (-1,-1), 4),
+                    ("LEFTPADDING",   (0,0), (-1,-1), 4),
+                    ("RIGHTPADDING",  (0,0), (-1,-1), 4),
+                ]))
+                story.append(Spacer(1, 3))
+                story.append(t)
+                story.append(Spacer(1, 5))
                 in_code = False
             i += 1; continue
         if in_code:
