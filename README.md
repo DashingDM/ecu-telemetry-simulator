@@ -62,6 +62,3 @@ help           — list commands
 | Flash (text) | 20,912 bytes / 128 KB |
 | RAM (bss) | 7,016 bytes / 8 KB |
 
-## Report
-
-Full technical write-up including design decisions, IPC analysis, test results, and captured telemetry: [REPORT.md](REPORT.md)
