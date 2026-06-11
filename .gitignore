@@ -1,0 +1,9 @@
+build/
+build_host/
+firmware/build/
+*.o
+*.a
+*.d
+
+# Claude Code session data
+.claude/

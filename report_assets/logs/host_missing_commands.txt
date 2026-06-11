@@ -1,0 +1,49 @@
+[telemetry] seq=1 temp=73.3C ax=0.34g ay=-0.08g az=9.86g spd=61.7km/h rpm=3216 throttle=100.0% fault=0
+Real-Time Vehicle Telemetry ECU Simulator
+Type 'help' for commands.
+ecu> Commands:
+  status           show counters and latest values
+  tasks            show task heartbeat health
+  heap             show simulated memory footprint
+  stats            show queue depths and frame counts
+  fault none       clear injected faults
+  fault overflow   stress the sensor queue
+  fault sensor     inject bad sensor readings
+  fault process    slow the processing path
+  reset            clear counters and queues
+  help             show this help
+  quit             exit cleanly
+ecu> Fault mode set to process-stall.
+ecu> Fault mode       : process-stall
+Sensor samples   : 1
+Telemetry frames : 1
+Sensor drops     : 0
+Telemetry drops  : 0
+Watchdog warnings: 0
+Latest temp      : 73.3 C
+Latest accel     : x=0.34 y=-0.08 z=9.86 g
+Latest speed     : 61.7 km/h
+Latest rpm       : 3216
+Latest throttle  : 100.0 %
+ecu> sensor beats   : 2
+processor beats: 2
+logger beats   : 2
+watchdog beats : 2
+watchdog alerts: 0
+ecu> Sensor queue depth   : 0
+Telemetry queue depth: 0
+Frames in            : 1
+Frames out           : 1
+ecu> Fault mode set to none.
+ecu> Fault mode       : none
+Sensor samples   : 1
+Telemetry frames : 1
+Sensor drops     : 0
+Telemetry drops  : 0
+Watchdog warnings: 0
+Latest temp      : 73.3 C
+Latest accel     : x=0.34 y=-0.08 z=9.86 g
+Latest speed     : 61.7 km/h
+Latest rpm       : 3216
+Latest throttle  : 100.0 %
+ecu> Shutting down...

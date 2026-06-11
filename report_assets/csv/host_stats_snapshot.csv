@@ -1,0 +1,5 @@
+snapshot_time,fault_mode,sensor_samples,telemetry_frames,sensor_drops,telemetry_drops
+1,none,1,1,0,0
+2,sensor-failure,1,1,0,0
+3,none,1,1,0,0
+4,none,0,0,0,0

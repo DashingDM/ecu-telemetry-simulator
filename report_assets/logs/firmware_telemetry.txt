@@ -1,0 +1,323 @@
+real-time vehicle telemetry ECU simulator
+target: STM32VLDISCOVERY / FreeRTOS / QEMU
+type help for commands
+diagnostics ready; type help
+ecu> ecu> [watchdog] healthy: sensor=1 processor=1 logger=1
+[telemetry] seq=1 temp=63.6C ax=0.07 ay=0.04 az=1.19 spd=8.6km/h rpm=1147 thr=14.1% valid=yes tick=101
+[watchdog] healthy: sensor=2 processor=2 logger=2
+[telemetry] seq=2 temp=64.2C ax=0.06 ay=0.83 az=1.40 spd=15.2km/h rpm=1249 thr=15.8% valid=yes tick=200
+ecu> [watchdog] healthy: sensor=3 processor=3 logger=3
+[telemetry] seq=3 temp=64.8C ax=0.19 ay=0.86 az=1.61 spd=17.6km/h rpm=1288 thr=16.4% valid=yes tick=300
+ecu> [watchdog] healthy: sensor=4 processor=4 logger=4
+[telemetry] seq=4 temp=65.4C ax=0.32 ay=0.01 az=1.18 spd=10.0km/h rpm=1177 thr=14.5% valid=yes tick=400
+ecu> [watchdog] healthy: sensor=5 processor=5 logger=5
+[telemetry] seq=5 temp=66.0C ax=0.45 ay=0.88 az=1.39 spd=18.0km/h rpm=1300 thr=16.5% valid=yes tick=500
+ecu> [watchdog] healthy: sensor=6 processor=6 logger=6
+[telemetry] seq=6 temp=66.6C ax=0.58 ay=0.81 az=1.60 spd=19.8km/h rpm=1330 thr=16.9% valid=yes tick=600
+ecu> [watchdog] healthy: sensor=7 processor=7 logger=7
+[telemetry] seq=7 temp=67.2C ax=0.71 ay=0.06 az=1.17 spd=12.8km/h rpm=1228 thr=15.2% valid=yes tick=700
+ecu> [watchdog] healthy: sensor=8 processor=8 logger=8
+[telemetry] seq=8 temp=67.8C ax=0.84 ay=0.93 az=1.38 spd=21.0km/h rpm=1354 thr=17.2% valid=yes tick=800
+ecu> [watchdog] healthy: sensor=9 processor=9 logger=9
+[telemetry] seq=9 temp=68.4C ax=0.97 ay=0.76 az=1.59 spd=22.0km/h rpm=1372 thr=17.5% valid=yes tick=900
+ecu> [watchdog] healthy: sensor=10 processor=10 logger=10
+[telemetry] seq=10 temp=69.0C ax=1.10 ay=0.11 az=1.16 spd=15.8km/h rpm=1282 thr=15.9% valid=yes tick=1000
+ecu> [watchdog] healthy: sensor=11 processor=11 logger=11
+[telemetry] seq=11 temp=69.6C ax=1.23 ay=0.98 az=1.37 spd=23.8km/h rpm=1405 thr=17.9% valid=yes tick=1100
+ecu> [watchdog] healthy: sensor=12 processor=12 logger=12
+[telemetry] seq=12 temp=70.2C ax=-1.20 ay=0.71 az=1.58 spd=23.2km/h rpm=1399 thr=17.8% valid=yes tick=1200
+ecu> [watchdog] healthy: sensor=13 processor=13 logger=13
+[telemetry] seq=13 temp=70.8C ax=-1.07 ay=0.16 az=1.15 spd=15.8km/h rpm=1291 thr=15.9% valid=yes tick=1300
+ecu> [watchdog] healthy: sensor=14 processor=14 logger=14
+[telemetry] seq=14 temp=71.4C ax=0.94 ay=-1.03 az=1.36 spd=22.2km/h rpm=1390 thr=17.5% valid=yes tick=1400
+ecu> [watchdog] healthy: sensor=15 processor=15 logger=15
+[telemetry] seq=15 temp=72.0C ax=0.81 ay=0.66 az=1.57 spd=20.2km/h rpm=1363 thr=17.0% valid=yes tick=1500
+ecu> ecu> [watchdog] healthy: sensor=16 processor=16 logger=16
+[telemetry] seq=16 temp=72.6C ax=0.68 ay=0.21 az=1.14 spd=13.4km/h rpm=1264 thr=15.3% valid=yes tick=1601
+[watchdog] healthy: sensor=17 processor=17 logger=17
+[telemetry] seq=17 temp=73.2C ax=0.55 ay=-1.08 az=1.35 spd=19.8km/h rpm=1363 thr=16.9% valid=yes tick=1700
+ecu> [watchdog] healthy: sensor=18 processor=18 logger=18
+[telemetry] seq=18 temp=73.8C ax=0.42 ay=0.61 az=1.56 spd=17.2km/h rpm=1327 thr=16.3% valid=yes tick=1800
+ecu> [watchdog] healthy: sensor=19 processor=19 logger=19
+[telemetry] seq=19 temp=74.4C ax=0.29 ay=0.26 az=1.13 spd=11.2km/h rpm=1240 thr=14.8% valid=yes tick=1900
+ecu> [watchdog] healthy: sensor=20 processor=20 logger=20
+[telemetry] seq=20 temp=75.0C ax=0.16 ay=-1.13 az=1.34 spd=17.4km/h rpm=1336 thr=16.3% valid=yes tick=2000
+ecu> [watchdog] healthy: sensor=21 processor=21 logger=21
+[telemetry] seq=21 temp=75.6C ax=0.03 ay=0.56 az=1.55 spd=14.2km/h rpm=1291 thr=15.5% valid=yes tick=2100
+ecu> [watchdog] healthy: sensor=22 processor=22 logger=22
+[telemetry] seq=22 temp=76.2C ax=0.10 ay=0.31 az=1.12 spd=10.2km/h rpm=1234 thr=14.5% valid=yes tick=2200
+ecu> [watchdog] healthy: sensor=23 processor=23 logger=23
+[telemetry] seq=23 temp=76.8C ax=0.23 ay=-1.18 az=1.33 spd=18.2km/h rpm=1357 thr=16.5% valid=yes tick=2300
+ecu> [watchdog] healthy: sensor=24 processor=24 logger=24
+[telemetry] seq=24 temp=77.4C ax=0.36 ay=0.51 az=1.54 spd=16.0km/h rpm=1327 thr=16.0% valid=yes tick=2400
+ecu> [watchdog] healthy: sensor=25 processor=25 logger=25
+[telemetry] seq=25 temp=78.0C ax=0.49 ay=0.36 az=1.11 spd=13.0km/h rpm=1285 thr=15.2% valid=yes tick=2500
+ecu> [watchdog] healthy: sensor=26 processor=26 logger=26
+[telemetry] seq=26 temp=78.6C ax=0.62 ay=-1.23 az=1.32 spd=21.0km/h rpm=1408 thr=17.2% valid=yes tick=2600
+ecu> [watchdog] healthy: sensor=27 processor=27 logger=27
+[telemetry] seq=27 temp=79.2C ax=0.75 ay=0.46 az=1.53 spd=18.2km/h rpm=1369 thr=16.5% valid=yes tick=2700
+ecu> [watchdog] healthy: sensor=28 processor=28 logger=28
+[telemetry] seq=28 temp=79.8C ax=0.88 ay=0.41 az=1.10 spd=15.8km/h rpm=1336 thr=15.9% valid=yes tick=2800
+ecu> [watchdog] healthy: sensor=29 processor=29 logger=29
+[telemetry] seq=29 temp=80.4C ax=1.01 ay=-1.28 az=1.31 spd=24.0km/h rpm=1462 thr=18.0% valid=yes tick=2900
+ecu> [watchdog] healthy: sensor=30 processor=30 logger=30
+[telemetry] seq=30 temp=63.0C ax=1.14 ay=0.41 az=1.52 spd=20.4km/h rpm=1321 thr=17.1% valid=yes tick=3000
+ecu> [watchdog] healthy: sensor=31 processor=31 logger=31
+[telemetry] seq=31 temp=63.6C ax=1.27 ay=0.46 az=1.09 spd=18.8km/h rpm=1300 thr=16.7% valid=yes tick=3100
+ecu> [watchdog] healthy: sensor=32 processor=32 logger=32
+[telemetry] seq=32 temp=64.2C ax=-1.16 ay=1.23 az=1.30 spd=24.6km/h rpm=1390 thr=18.1% valid=yes tick=3200
+ecu> [watchdog] healthy: sensor=33 processor=33 logger=33
+[telemetry] seq=33 temp=64.8C ax=-1.03 ay=0.36 az=1.51 spd=19.2km/h rpm=1312 thr=16.8% valid=yes tick=3300
+ecu> [watchdog] healthy: sensor=34 processor=34 logger=34
+[telemetry] seq=34 temp=65.4C ax=0.90 ay=0.51 az=1.08 spd=16.6km/h rpm=1276 thr=16.1% valid=yes tick=3400
+ecu> [watchdog] healthy: sensor=35 processor=35 logger=35
+[telemetry] seq=35 temp=66.0C ax=0.77 ay=1.18 az=1.29 spd=21.6km/h rpm=1354 thr=17.4% valid=yes tick=3500
+ecu> [watchdog] healthy: sensor=36 processor=36 logger=36
+[telemetry] seq=36 temp=66.6C ax=0.64 ay=0.31 az=1.50 spd=16.2km/h rpm=1276 thr=16.0% valid=yes tick=3600
+ecu> [watchdog] healthy: sensor=37 processor=37 logger=37
+[telemetry] seq=37 temp=67.2C ax=0.51 ay=0.56 az=1.07 spd=14.2km/h rpm=1249 thr=15.5% valid=yes tick=3700
+ecu> [watchdog] healthy: sensor=38 processor=38 logger=38
+[telemetry] seq=38 temp=67.8C ax=0.38 ay=1.13 az=1.28 spd=18.6km/h rpm=1318 thr=16.6% valid=yes tick=3800
+ecu> [watchdog] healthy: sensor=39 processor=39 logger=39
+[telemetry] seq=39 temp=68.4C ax=0.25 ay=0.26 az=1.49 spd=13.2km/h rpm=1240 thr=15.3% valid=yes tick=3900
+ecu> [watchdog] healthy: sensor=40 processor=40 logger=40
+[telemetry] seq=40 temp=69.0C ax=0.12 ay=0.61 az=1.06 spd=11.8km/h rpm=1222 thr=14.9% valid=yes tick=4000
+ecu> [watchdog] healthy: sensor=41 processor=41 logger=41
+[telemetry] seq=41 temp=69.6C ax=0.01 ay=1.08 az=1.27 spd=15.6km/h rpm=1282 thr=15.9% valid=yes tick=4100
+ecu> [watchdog] healthy: sensor=42 processor=42 logger=42
+[telemetry] seq=42 temp=70.2C ax=0.14 ay=0.21 az=1.48 spd=12.2km/h rpm=1234 thr=15.0% valid=yes tick=4200
+ecu> [watchdog] healthy: sensor=43 processor=43 logger=43
+[telemetry] seq=43 temp=70.8C ax=0.27 ay=0.66 az=1.05 spd=13.2km/h rpm=1252 thr=15.3% valid=yes tick=4300
+ecu> [watchdog] healthy: sensor=44 processor=44 logger=44
+[telemetry] seq=44 temp=71.4C ax=0.40 ay=1.03 az=1.26 spd=17.8km/h rpm=1324 thr=16.4% valid=yes tick=4400
+ecu> [watchdog] healthy: sensor=45 processor=45 logger=45
+[telemetry] seq=45 temp=72.0C ax=0.53 ay=0.16 az=1.47 spd=14.4km/h rpm=1276 thr=15.6% valid=yes tick=4500
+ecu> [watchdog] healthy: sensor=46 processor=46 logger=46
+[telemetry] seq=46 temp=72.6C ax=0.66 ay=0.71 az=1.04 spd=16.0km/h rpm=1303 thr=16.0% valid=yes tick=4600
+ecu> [watchdog] healthy: sensor=47 processor=47 logger=47
+[telemetry] seq=47 temp=73.2C ax=0.79 ay=0.98 az=1.25 spd=20.0km/h rpm=1366 thr=17.0% valid=yes tick=4700
+ecu> [watchdog] healthy: sensor=48 processor=48 logger=48
+[telemetry] seq=48 temp=73.8C ax=0.92 ay=0.11 az=1.46 spd=16.6km/h rpm=1318 thr=16.1% valid=yes tick=4800
+ecu> [watchdog] healthy: sensor=49 processor=49 logger=49
+[telemetry] seq=49 temp=74.4C ax=1.05 ay=0.76 az=1.03 spd=18.8km/h rpm=1354 thr=16.7% valid=yes tick=4900
+ecu> [watchdog] healthy: sensor=50 processor=50 logger=50
+[telemetry] seq=50 temp=75.0C ax=1.18 ay=0.93 az=1.24 spd=22.2km/h rpm=1408 thr=17.5% valid=yes tick=5000
+ecu> [watchdog] healthy: sensor=51 processor=51 logger=51
+[telemetry] seq=51 temp=75.6C ax=-1.25 ay=0.06 az=1.45 spd=18.4km/h rpm=1354 thr=16.6% valid=yes tick=5100
+ecu> [watchdog] healthy: sensor=52 processor=52 logger=52
+[telemetry] seq=52 temp=76.2C ax=-1.12 ay=0.81 az=1.02 spd=19.6km/h rpm=1375 thr=16.9% valid=yes tick=5200
+ecu> [watchdog] healthy: sensor=53 processor=53 logger=53
+[telemetry] seq=53 temp=76.8C ax=0.99 ay=0.88 az=1.23 spd=20.6km/h rpm=1393 thr=17.1% valid=yes tick=5300
+ecu> [watchdog] healthy: sensor=54 processor=54 logger=54
+[telemetry] seq=54 temp=77.4C ax=0.86 ay=0.01 az=1.44 spd=15.4km/h rpm=1318 thr=15.8% valid=yes tick=5400
+ecu> [watchdog] healthy: sensor=55 processor=55 logger=55
+[telemetry] seq=55 temp=78.0C ax=0.73 ay=0.86 az=1.01 spd=17.2km/h rpm=1348 thr=16.3% valid=yes tick=5500
+ecu> [watchdog] healthy: sensor=56 processor=56 logger=56
+[telemetry] seq=56 temp=78.6C ax=0.60 ay=0.83 az=1.22 spd=17.6km/h rpm=1357 thr=16.4% valid=yes tick=5600
+ecu> [watchdog] healthy: sensor=57 processor=57 logger=57
+[telemetry] seq=57 temp=79.2C ax=0.47 ay=0.04 az=1.43 spd=12.8km/h rpm=1288 thr=15.2% valid=yes tick=5700
+ecu> [watchdog] healthy: sensor=58 processor=58 logger=58
+[telemetry] seq=58 temp=79.8C ax=0.34 ay=0.91 az=1.00 spd=15.0km/h rpm=1324 thr=15.7% valid=yes tick=5800
+ecu> [watchdog] healthy: sensor=59 processor=59 logger=59
+[telemetry] seq=59 temp=80.4C ax=0.21 ay=0.78 az=1.21 spd=14.6km/h rpm=1321 thr=15.6% valid=yes tick=5900
+ecu> [watchdog] healthy: sensor=60 processor=60 logger=60
+[telemetry] seq=60 temp=63.0C ax=0.08 ay=0.09 az=1.42 spd=10.6km/h rpm=1174 thr=14.6% valid=yes tick=6000
+ecu> [watchdog] healthy: sensor=61 processor=61 logger=61
+[telemetry] seq=61 temp=63.6C ax=0.05 ay=0.96 az=1.63 spd=17.6km/h rpm=1282 thr=16.4% valid=yes tick=6100
+ecu> [watchdog] healthy: sensor=62 processor=62 logger=62
+[telemetry] seq=62 temp=64.2C ax=0.18 ay=0.73 az=1.20 spd=14.0km/h rpm=1231 thr=15.5% valid=yes tick=6200
+ecu> [watchdog] healthy: sensor=63 processor=63 logger=63
+[telemetry] seq=63 temp=64.8C ax=0.31 ay=0.14 az=1.41 spd=12.4km/h rpm=1210 thr=15.1% valid=yes tick=6300
+ecu> [watchdog] healthy: sensor=64 processor=64 logger=64
+[telemetry] seq=64 temp=65.4C ax=0.44 ay=-1.01 az=1.62 spd=20.4km/h rpm=1333 thr=17.1% valid=yes tick=6400
+ecu> [watchdog] healthy: sensor=65 processor=65 logger=65
+[telemetry] seq=65 temp=66.0C ax=0.57 ay=0.68 az=1.19 spd=16.2km/h rpm=1273 thr=16.0% valid=yes tick=6500
+ecu> [watchdog] healthy: sensor=66 processor=66 logger=66
+[telemetry] seq=66 temp=66.6C ax=0.70 ay=0.19 az=1.40 spd=15.2km/h rpm=1261 thr=15.8% valid=yes tick=6600
+ecu> [watchdog] healthy: sensor=67 processor=67 logger=67
+[telemetry] seq=67 temp=67.2C ax=0.83 ay=-1.06 az=1.61 spd=23.2km/h rpm=1384 thr=17.8% valid=yes tick=6700
+ecu> [watchdog] healthy: sensor=68 processor=68 logger=68
+[telemetry] seq=68 temp=67.8C ax=0.96 ay=0.63 az=1.18 spd=18.4km/h rpm=1315 thr=16.6% valid=yes tick=6800
+ecu> [watchdog] healthy: sensor=69 processor=69 logger=69
+[telemetry] seq=69 temp=68.4C ax=1.09 ay=0.24 az=1.39 spd=18.0km/h rpm=1312 thr=16.5% valid=yes tick=6900
+ecu> [watchdog] healthy: sensor=70 processor=70 logger=70
+[telemetry] seq=70 temp=69.0C ax=1.22 ay=-1.11 az=1.60 spd=26.2km/h rpm=1438 thr=18.5% valid=yes tick=7000
+ecu> [watchdog] healthy: sensor=71 processor=71 logger=71
+[telemetry] seq=71 temp=69.6C ax=-1.21 ay=0.58 az=1.17 spd=19.6km/h rpm=1342 thr=16.9% valid=yes tick=7100
+ecu> [watchdog] healthy: sensor=72 processor=72 logger=72
+[telemetry] seq=72 temp=70.2C ax=-1.08 ay=0.29 az=1.38 spd=18.2km/h rpm=1324 thr=16.5% valid=yes tick=7200
+ecu> [watchdog] healthy: sensor=73 processor=73 logger=73
+[telemetry] seq=73 temp=70.8C ax=0.95 ay=-1.16 az=1.59 spd=24.6km/h rpm=1423 thr=18.1% valid=yes tick=7300
+ecu> [watchdog] healthy: sensor=74 processor=74 logger=74
+[telemetry] seq=74 temp=71.4C ax=0.82 ay=0.53 az=1.16 spd=16.6km/h rpm=1306 thr=16.1% valid=yes tick=7400
+ecu> [watchdog] healthy: sensor=75 processor=75 logger=75
+[telemetry] seq=75 temp=72.0C ax=0.69 ay=0.34 az=1.37 spd=16.0km/h rpm=1300 thr=16.0% valid=yes tick=7500
+ecu> [watchdog] healthy: sensor=76 processor=76 logger=76
+[telemetry] seq=76 temp=72.6C ax=0.56 ay=-1.21 az=1.58 spd=22.2km/h rpm=1396 thr=17.5% valid=yes tick=7600
+ecu> [watchdog] healthy: sensor=77 processor=77 logger=77
+[telemetry] seq=77 temp=73.2C ax=0.43 ay=0.48 az=1.15 spd=13.6km/h rpm=1270 thr=15.4% valid=yes tick=7700
+ecu> [watchdog] healthy: sensor=78 processor=78 logger=78
+[telemetry] seq=78 temp=73.8C ax=0.30 ay=0.39 az=1.36 spd=13.6km/h rpm=1273 thr=15.4% valid=yes tick=7800
+ecu> [watchdog] healthy: sensor=79 processor=79 logger=79
+[telemetry] seq=79 temp=74.4C ax=0.17 ay=-1.26 az=1.57 spd=20.0km/h rpm=1372 thr=17.0% valid=yes tick=7900
+ecu> [watchdog] healthy: sensor=80 processor=80 logger=80
+[telemetry] seq=80 temp=75.0C ax=0.04 ay=0.43 az=1.14 spd=10.6km/h rpm=1234 thr=14.6% valid=yes tick=8000
+ecu> [watchdog] healthy: sensor=81 processor=81 logger=81
+[telemetry] seq=81 temp=75.6C ax=0.09 ay=0.44 az=1.35 spd=12.4km/h rpm=1264 thr=15.1% valid=yes tick=8100
+ecu> [watchdog] healthy: sensor=82 processor=82 logger=82
+[telemetry] seq=82 temp=76.2C ax=0.22 ay=1.25 az=1.56 spd=20.2km/h rpm=1384 thr=17.0% valid=yes tick=8200
+ecu> [watchdog] healthy: sensor=83 processor=83 logger=83
+[telemetry] seq=83 temp=76.8C ax=0.35 ay=0.38 az=1.13 spd=12.4km/h rpm=1270 thr=15.1% valid=yes tick=8300
+ecu> [watchdog] healthy: sensor=84 processor=84 logger=84
+[telemetry] seq=84 temp=77.4C ax=0.48 ay=0.49 az=1.34 spd=15.4km/h rpm=1318 thr=15.8% valid=yes tick=8400
+ecu> [watchdog] healthy: sensor=85 processor=85 logger=85
+[telemetry] seq=85 temp=78.0C ax=0.61 ay=1.20 az=1.55 spd=22.4km/h rpm=1426 thr=17.6% valid=yes tick=8500
+ecu> [watchdog] healthy: sensor=86 processor=86 logger=86
+[telemetry] seq=86 temp=78.6C ax=0.74 ay=0.33 az=1.12 spd=14.6km/h rpm=1312 thr=15.6% valid=yes tick=8600
+ecu> [watchdog] healthy: sensor=87 processor=87 logger=87
+[telemetry] seq=87 temp=79.2C ax=0.87 ay=0.54 az=1.33 spd=18.2km/h rpm=1369 thr=16.5% valid=yes tick=8700
+ecu> [watchdog] healthy: sensor=88 processor=88 logger=88
+[telemetry] seq=88 temp=79.8C ax=1.00 ay=1.15 az=1.54 spd=24.6km/h rpm=1468 thr=18.1% valid=yes tick=8800
+ecu> [watchdog] healthy: sensor=89 processor=89 logger=89
+[telemetry] seq=89 temp=80.4C ax=1.13 ay=0.28 az=1.11 spd=16.8km/h rpm=1354 thr=16.2% valid=yes tick=8900
+ecu> [watchdog] healthy: sensor=90 processor=90 logger=90
+[telemetry] seq=90 temp=63.0C ax=1.26 ay=0.59 az=1.32 spd=21.0km/h rpm=1330 thr=17.2% valid=yes tick=9000
+ecu> [watchdog] healthy: sensor=91 processor=91 logger=91
+[telemetry] seq=91 temp=63.6C ax=-1.17 ay=1.10 az=1.53 spd=25.2km/h rpm=1396 thr=18.3% valid=yes tick=9100
+ecu> [watchdog] healthy: sensor=92 processor=92 logger=92
+[telemetry] seq=92 temp=64.2C ax=-1.04 ay=0.23 az=1.10 spd=15.8km/h rpm=1258 thr=15.9% valid=yes tick=9200
+ecu> [watchdog] healthy: sensor=93 processor=93 logger=93
+[telemetry] seq=93 temp=64.8C ax=0.91 ay=0.64 az=1.31 spd=19.0km/h rpm=1309 thr=16.7% valid=yes tick=9300
+ecu> [watchdog] healthy: sensor=94 processor=94 logger=94
+[telemetry] seq=94 temp=65.4C ax=0.78 ay=1.05 az=1.52 spd=22.2km/h rpm=1360 thr=17.5% valid=yes tick=9400
+ecu> [watchdog] healthy: sensor=95 processor=95 logger=95
+[telemetry] seq=95 temp=66.0C ax=0.65 ay=0.18 az=1.09 spd=12.8km/h rpm=1222 thr=15.2% valid=yes tick=9500
+ecu> [watchdog] healthy: sensor=96 processor=96 logger=96
+[telemetry] seq=96 temp=66.6C ax=0.52 ay=0.69 az=1.30 spd=16.6km/h rpm=1282 thr=16.1% valid=yes tick=9600
+ecu> [watchdog] healthy: sensor=97 processor=97 logger=97
+[telemetry] seq=97 temp=67.2C ax=0.39 ay=1.00 az=1.51 spd=19.2km/h rpm=1324 thr=16.8% valid=yes tick=9700
+ecu> [watchdog] healthy: sensor=98 processor=98 logger=98
+[telemetry] seq=98 temp=67.8C ax=0.26 ay=0.13 az=1.08 spd=9.8km/h rpm=1186 thr=14.4% valid=yes tick=9800
+ecu> [watchdog] healthy: sensor=99 processor=99 logger=99
+[telemetry] seq=99 temp=68.4C ax=0.13 ay=0.74 az=1.29 spd=14.4km/h rpm=1258 thr=15.6% valid=yes tick=9900
+ecu> [watchdog] healthy: sensor=100 processor=100 logger=100
+[telemetry] seq=100 temp=69.0C ax=0.00 ay=0.95 az=1.50 spd=16.2km/h rpm=1288 thr=16.0% valid=yes tick=10000
+ecu> [watchdog] healthy: sensor=101 processor=101 logger=101
+[telemetry] seq=101 temp=69.6C ax=0.13 ay=0.08 az=1.07 spd=8.4km/h rpm=1174 thr=14.1% valid=yes tick=10100
+ecu> [watchdog] healthy: sensor=102 processor=102 logger=102
+[telemetry] seq=102 temp=70.2C ax=0.26 ay=0.79 az=1.28 spd=15.4km/h rpm=1282 thr=15.8% valid=yes tick=10200
+ecu> [watchdog] healthy: sensor=103 processor=103 logger=103
+[telemetry] seq=103 temp=70.8C ax=0.39 ay=0.90 az=1.49 spd=18.4km/h rpm=1330 thr=16.6% valid=yes tick=10300
+ecu> [watchdog] healthy: sensor=104 processor=104 logger=104
+[telemetry] seq=104 temp=71.4C ax=0.52 ay=0.03 az=1.06 spd=10.6km/h rpm=1216 thr=14.6% valid=yes tick=10400
+ecu> [watchdog] healthy: sensor=105 processor=105 logger=105
+[telemetry] seq=105 temp=72.0C ax=0.65 ay=0.84 az=1.27 spd=18.4km/h rpm=1336 thr=16.6% valid=yes tick=10500
+ecu> [watchdog] healthy: sensor=106 processor=106 logger=106
+[telemetry] seq=106 temp=72.6C ax=0.78 ay=0.85 az=1.48 spd=20.6km/h rpm=1372 thr=17.1% valid=yes tick=10600
+ecu> [watchdog] healthy: sensor=107 processor=107 logger=107
+[telemetry] seq=107 temp=73.2C ax=0.91 ay=0.02 az=1.05 spd=13.2km/h rpm=1264 thr=15.3% valid=yes tick=10700
+ecu> [watchdog] healthy: sensor=108 processor=108 logger=108
+[telemetry] seq=108 temp=73.8C ax=1.04 ay=0.89 az=1.26 spd=21.2km/h rpm=1387 thr=17.3% valid=yes tick=10800
+ecu> [watchdog] healthy: sensor=109 processor=109 logger=109
+[telemetry] seq=109 temp=74.4C ax=1.17 ay=0.80 az=1.47 spd=22.8km/h rpm=1414 thr=17.7% valid=yes tick=10900
+ecu> [watchdog] healthy: sensor=110 processor=110 logger=110
+[telemetry] seq=110 temp=75.0C ax=-1.26 ay=0.07 az=1.04 spd=15.8km/h rpm=1312 thr=15.9% valid=yes tick=11000
+ecu> [watchdog] healthy: sensor=111 processor=111 logger=111
+[telemetry] seq=111 temp=75.6C ax=-1.13 ay=0.94 az=1.25 spd=22.0km/h rpm=1408 thr=17.5% valid=yes tick=11100
+ecu> [watchdog] healthy: sensor=112 processor=112 logger=112
+[telemetry] seq=112 temp=76.2C ax=-1.00 ay=0.75 az=1.46 spd=21.4km/h rpm=1402 thr=17.3% valid=yes tick=11200
+ecu> [watchdog] healthy: sensor=113 processor=113 logger=113
+[telemetry] seq=113 temp=76.8C ax=0.87 ay=0.12 az=1.03 spd=13.4km/h rpm=1285 thr=15.3% valid=yes tick=11300
+ecu> [watchdog] healthy: sensor=114 processor=114 logger=114
+[telemetry] seq=114 temp=77.4C ax=0.74 ay=0.99 az=1.24 spd=19.8km/h rpm=1384 thr=16.9% valid=yes tick=11400
+ecu> [watchdog] healthy: sensor=115 processor=115 logger=115
+[telemetry] seq=115 temp=78.0C ax=0.61 ay=0.70 az=1.45 spd=18.4km/h rpm=1366 thr=16.6% valid=yes tick=11500
+ecu> [watchdog] healthy: sensor=116 processor=116 logger=116
+[telemetry] seq=116 temp=78.6C ax=0.48 ay=0.17 az=1.02 spd=11.0km/h rpm=1258 thr=14.7% valid=yes tick=11600
+ecu> [watchdog] healthy: sensor=117 processor=117 logger=117
+[telemetry] seq=117 temp=79.2C ax=0.35 ay=-1.04 az=1.23 spd=17.4km/h rpm=1357 thr=16.3% valid=yes tick=11700
+ecu> [watchdog] healthy: sensor=118 processor=118 logger=118
+[telemetry] seq=118 temp=79.8C ax=0.22 ay=0.65 az=1.44 spd=15.4km/h rpm=1330 thr=15.8% valid=yes tick=11800
+ecu> [watchdog] healthy: sensor=119 processor=119 logger=119
+[telemetry] seq=119 temp=80.4C ax=0.09 ay=0.22 az=1.01 spd=8.8km/h rpm=1234 thr=14.2% valid=yes tick=11900
+ecu> [watchdog] healthy: sensor=120 processor=120 logger=120
+[telemetry] seq=120 temp=63.0C ax=0.04 ay=-1.09 az=1.22 spd=15.6km/h rpm=1249 thr=15.9% valid=yes tick=12000
+ecu> [watchdog] healthy: sensor=121 processor=121 logger=121
+[telemetry] seq=121 temp=63.6C ax=0.17 ay=0.60 az=1.43 spd=14.6km/h rpm=1237 thr=15.6% valid=yes tick=12100
+ecu> [watchdog] healthy: sensor=122 processor=122 logger=122
+[telemetry] seq=122 temp=64.2C ax=0.30 ay=0.27 az=1.00 spd=10.4km/h rpm=1177 thr=14.6% valid=yes tick=12200
+ecu> [watchdog] healthy: sensor=123 processor=123 logger=123
+[telemetry] seq=123 temp=64.8C ax=0.43 ay=-1.14 az=1.21 spd=18.4km/h rpm=1300 thr=16.6% valid=yes tick=12300
+ecu> [watchdog] healthy: sensor=124 processor=124 logger=124
+[telemetry] seq=124 temp=65.4C ax=0.56 ay=0.55 az=1.42 spd=16.8km/h rpm=1279 thr=16.2% valid=yes tick=12400
+ecu> [watchdog] healthy: sensor=125 processor=125 logger=125
+[telemetry] seq=125 temp=66.0C ax=0.69 ay=0.32 az=1.63 spd=17.6km/h rpm=1294 thr=16.4% valid=yes tick=12500
+ecu> [watchdog] healthy: sensor=126 processor=126 logger=126
+[telemetry] seq=126 temp=66.6C ax=0.82 ay=-1.19 az=1.20 spd=21.4km/h rpm=1354 thr=17.3% valid=yes tick=12600
+ecu> [watchdog] healthy: sensor=127 processor=127 logger=127
+[telemetry] seq=127 temp=67.2C ax=0.95 ay=0.50 az=1.41 spd=19.0km/h rpm=1321 thr=16.7% valid=yes tick=12700
+ecu> [watchdog] healthy: sensor=128 processor=128 logger=128
+[telemetry] seq=128 temp=67.8C ax=1.08 ay=0.37 az=1.62 spd=20.4km/h rpm=1345 thr=17.1% valid=yes tick=12800
+ecu> [watchdog] healthy: sensor=129 processor=129 logger=129
+[telemetry] seq=129 temp=68.4C ax=1.21 ay=-1.24 az=1.19 spd=24.2km/h rpm=1405 thr=18.0% valid=yes tick=12900
+ecu> [watchdog] healthy: sensor=130 processor=130 logger=130
+[telemetry] seq=130 temp=69.0C ax=-1.22 ay=0.45 az=1.40 spd=20.4km/h rpm=1351 thr=17.1% valid=yes tick=13000
+ecu> [watchdog] healthy: sensor=131 processor=131 logger=131
+[telemetry] seq=131 temp=69.6C ax=-1.09 ay=0.42 az=1.61 spd=20.8km/h rpm=1360 thr=17.2% valid=yes tick=13100
+ecu> [watchdog] healthy: sensor=132 processor=132 logger=132
+[telemetry] seq=132 temp=70.2C ax=0.96 ay=1.27 az=1.18 spd=22.6km/h rpm=1390 thr=17.6% valid=yes tick=13200
+ecu> [watchdog] healthy: sensor=133 processor=133 logger=133
+[telemetry] seq=133 temp=70.8C ax=0.83 ay=0.40 az=1.39 spd=17.4km/h rpm=1315 thr=16.3% valid=yes tick=13300
+ecu> [watchdog] healthy: sensor=134 processor=134 logger=134
+[telemetry] seq=134 temp=71.4C ax=0.70 ay=0.47 az=1.60 spd=18.4km/h rpm=1333 thr=16.6% valid=yes tick=13400
+ecu> [watchdog] healthy: sensor=135 processor=135 logger=135
+[telemetry] seq=135 temp=72.0C ax=0.57 ay=1.22 az=1.17 spd=19.6km/h rpm=1354 thr=16.9% valid=yes tick=13500
+ecu> [watchdog] healthy: sensor=136 processor=136 logger=136
+[telemetry] seq=136 temp=72.6C ax=0.44 ay=0.35 az=1.38 spd=14.4km/h rpm=1279 thr=15.6% valid=yes tick=13600
+ecu> [watchdog] healthy: sensor=137 processor=137 logger=137
+[telemetry] seq=137 temp=73.2C ax=0.31 ay=0.52 az=1.59 spd=16.0km/h rpm=1306 thr=16.0% valid=yes tick=13700
+ecu> [watchdog] healthy: sensor=138 processor=138 logger=138
+[telemetry] seq=138 temp=73.8C ax=0.18 ay=1.17 az=1.16 spd=16.6km/h rpm=1318 thr=16.1% valid=yes tick=13800
+ecu> [watchdog] healthy: sensor=139 processor=139 logger=139
+[telemetry] seq=139 temp=74.4C ax=0.05 ay=0.30 az=1.37 spd=11.4km/h rpm=1243 thr=14.8% valid=yes tick=13900
+ecu> [watchdog] healthy: sensor=140 processor=140 logger=140
+[telemetry] seq=140 temp=75.0C ax=0.08 ay=0.57 az=1.58 spd=14.8km/h rpm=1297 thr=15.7% valid=yes tick=14000
+ecu> [watchdog] healthy: sensor=141 processor=141 logger=141
+[telemetry] seq=141 temp=75.6C ax=0.21 ay=1.12 az=1.15 spd=16.4km/h rpm=1324 thr=16.1% valid=yes tick=14100
+ecu> [watchdog] healthy: sensor=142 processor=142 logger=142
+[telemetry] seq=142 temp=76.2C ax=0.34 ay=0.25 az=1.36 spd=13.0km/h rpm=1276 thr=15.2% valid=yes tick=14200
+ecu> [watchdog] healthy: sensor=143 processor=143 logger=143
+[telemetry] seq=143 temp=76.8C ax=0.47 ay=0.62 az=1.57 spd=17.6km/h rpm=1348 thr=16.4% valid=yes tick=14300
+ecu> [watchdog] healthy: sensor=144 processor=144 logger=144
+[telemetry] seq=144 temp=77.4C ax=0.60 ay=1.07 az=1.14 spd=18.6km/h rpm=1366 thr=16.6% valid=yes tick=14400
+ecu> [watchdog] healthy: sensor=145 processor=145 logger=145
+[telemetry] seq=145 temp=78.0C ax=0.73 ay=0.20 az=1.35 spd=15.2km/h rpm=1318 thr=15.8% valid=yes tick=14500
+ecu> [watchdog] healthy: sensor=146 processor=146 logger=146
+[telemetry] seq=146 temp=78.6C ax=0.86 ay=0.67 az=1.56 spd=20.6km/h rpm=1402 thr=17.1% valid=yes tick=14600
+ecu> [watchdog] healthy: sensor=147 processor=147 logger=147
+[telemetry] seq=147 temp=79.2C ax=0.99 ay=1.02 az=1.13 spd=20.8km/h rpm=1408 thr=17.2% valid=yes tick=14700
+ecu> [watchdog] healthy: sensor=148 processor=148 logger=148
+[telemetry] seq=148 temp=79.8C ax=1.12 ay=0.15 az=1.34 spd=17.4km/h rpm=1360 thr=16.3% valid=yes tick=14800
+ecu> [watchdog] healthy: sensor=149 processor=149 logger=149
+[telemetry] seq=149 temp=80.4C ax=1.25 ay=0.72 az=1.55 spd=23.4km/h rpm=1453 thr=17.8% valid=yes tick=14900
+ecu> [watchdog] healthy: sensor=150 processor=150 logger=150
+[telemetry] seq=150 temp=63.0C ax=-1.18 ay=0.97 az=1.12 spd=21.8km/h rpm=1342 thr=17.4% valid=yes tick=15000
+ecu> [watchdog] healthy: sensor=151 processor=151 logger=151
+[telemetry] seq=151 temp=63.6C ax=-1.05 ay=0.10 az=1.33 spd=16.4km/h rpm=1264 thr=16.1% valid=yes tick=15100
+ecu> [watchdog] healthy: sensor=152 processor=152 logger=152
+[telemetry] seq=152 temp=64.2C ax=0.92 ay=0.77 az=1.54 spd=21.4km/h rpm=1342 thr=17.3% valid=yes tick=15200
+ecu> [watchdog] healthy: sensor=153 processor=153 logger=153
+[telemetry] seq=153 temp=64.8C ax=0.79 ay=0.92 az=1.11 spd=18.8km/h rpm=1306 thr=16.7% valid=yes tick=15300
+ecu> [watchdog] healthy: sensor=154 processor=154 logger=154
+[telemetry] seq=154 temp=65.4C ax=0.66 ay=0.05 az=1.32 spd=13.4km/h rpm=1228 thr=15.3% valid=yes tick=15400
+ecu> [watchdog] healthy: sensor=155 processor=155 logger=155
+[telemetry] seq=155 temp=66.0C ax=0.53 ay=0.82 az=1.53 spd=19.2km/h rpm=1318 thr=16.8% valid=yes tick=15500
+ecu> [watchdog] healthy: sensor=156 processor=156 logger=156
+[telemetry] seq=156 temp=66.6C ax=0.40 ay=0.87 az=1.10 spd=15.8km/h rpm=1270 thr=15.9% valid=yes tick=15600
+ecu> [watchdog] healthy: sensor=157 processor=157 logger=157
+[telemetry] seq=157 temp=67.2C ax=0.27 ay=0.00 az=1.31 spd=10.4km/h rpm=1192 thr=14.6% valid=yes tick=15700
+ecu> [watchdog] healthy: sensor=158 processor=158 logger=158
+[telemetry] seq=158 temp=67.8C ax=0.14 ay=0.87 az=1.52 spd=16.8km/h rpm=1291 thr=16.2% valid=yes tick=15800
+ecu> [watchdog] healthy: sensor=159 processor=159 logger=159
+[telemetry] seq=159 temp=68.4C ax=0.01 ay=0.82 az=1.09 spd=12.8km/h rpm=1234 thr=15.2% valid=yes tick=15900
+ecu> qemu-system-arm: terminating on signal 15 from pid 54631 (<unknown process>)
