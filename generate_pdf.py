@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate a single-column academic PDF matching the HPC report style."""
+"""Generate academic PDF: HPC-style cover + two-column body, no date."""
 
 import os, re
 from reportlab.lib.pagesizes import letter
@@ -7,10 +7,11 @@ from reportlab.lib.styles import ParagraphStyle
 from reportlab.lib.units import inch
 from reportlab.lib import colors
 from reportlab.platypus import (
-    SimpleDocTemplate, Paragraph, Spacer, Image, Table, TableStyle,
-    HRFlowable, Preformatted, PageBreak, KeepTogether
+    BaseDocTemplate, PageTemplate, Frame,
+    Paragraph, Spacer, Image, Table, TableStyle,
+    HRFlowable, Preformatted, PageBreak, NextPageTemplate
 )
-from reportlab.lib.enums import TA_LEFT, TA_CENTER, TA_JUSTIFY, TA_RIGHT
+from reportlab.lib.enums import TA_LEFT, TA_CENTER, TA_JUSTIFY
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 REPORT_MD = os.path.join(BASE_DIR, "REPORT.md")
@@ -35,55 +36,58 @@ IMAGE_MAP = {
     "fault_demo.png":                  "report_assets/graphs/fault_demo.png",
 }
 
-# ── page geometry ──────────────────────────────────────────────────────────────
-PW, PH  = letter
-LM = RM = 1.25 * inch
-TM      = 1.0  * inch
-BM      = 1.0  * inch
-BODY_W  = PW - LM - RM   # ~6 in
+# ── geometry ───────────────────────────────────────────────────────────────────
+PW, PH   = letter
+LM = RM  = 0.75 * inch
+TM       = 1.0  * inch
+BM       = 0.85 * inch
+COL_GAP  = 0.25 * inch
+COL_W    = (PW - LM - RM - COL_GAP) / 2   # ≈ 3.375 in
 
-# ── styles (Times-Roman throughout — closest to Computer Modern) ───────────────
+# ── styles ─────────────────────────────────────────────────────────────────────
 def S(name, **kw):
     return ParagraphStyle(name, **kw)
 
-TITLE  = S("Title",  fontName="Times-Bold",       fontSize=22, leading=28,
-           alignment=TA_CENTER, spaceAfter=12)
-SUBM   = S("Subm",   fontName="Times-Roman",       fontSize=12, leading=16,
-           alignment=TA_CENTER, spaceAfter=4)
-SUBM_B = S("SubmB",  fontName="Times-Bold",        fontSize=12, leading=16,
-           alignment=TA_CENTER, spaceAfter=4)
-ABST_H = S("AbstH",  fontName="Times-Bold",        fontSize=12, leading=16,
-           alignment=TA_CENTER, spaceAfter=6, spaceBefore=12)
-ABST   = S("Abst",   fontName="Times-Italic",      fontSize=11, leading=15,
-           alignment=TA_JUSTIFY, leftIndent=0.4*inch, rightIndent=0.4*inch,
-           spaceAfter=6)
-SEC    = S("Sec",    fontName="Times-Bold",         fontSize=13, leading=17,
-           spaceBefore=14, spaceAfter=4)
-SSEC   = S("SSec",   fontName="Times-BoldItalic",  fontSize=11, leading=15,
-           spaceBefore=10, spaceAfter=3)
-SSSEC  = S("SSSec",  fontName="Times-Italic",      fontSize=11, leading=15,
-           spaceBefore=6, spaceAfter=2)
-BODY   = S("Body",   fontName="Times-Roman",        fontSize=11, leading=15,
-           alignment=TA_JUSTIFY, spaceAfter=6)
-BULLET = S("Bullet", fontName="Times-Roman",        fontSize=11, leading=15,
-           leftIndent=0.3*inch, spaceAfter=3)
-CODE   = S("Code",   fontName="Courier",            fontSize=9,  leading=12,
+# cover
+CVR_TITLE = S("CvrTitle", fontName="Times-Bold",   fontSize=22, leading=28,
+              alignment=TA_CENTER, spaceAfter=10)
+CVR_SUB   = S("CvrSub",   fontName="Times-Roman",  fontSize=12, leading=16,
+              alignment=TA_CENTER, spaceAfter=4)
+CVR_SUBB  = S("CvrSubB",  fontName="Times-Bold",   fontSize=12, leading=16,
+              alignment=TA_CENTER, spaceAfter=4)
+
+# body
+BODY   = S("Body",   fontName="Times-Roman",      fontSize=9,  leading=12,
+           alignment=TA_JUSTIFY, spaceAfter=5)
+ABST_H = S("AbstH",  fontName="Times-Bold",       fontSize=10, leading=13,
+           alignment=TA_CENTER, spaceBefore=8, spaceAfter=4)
+ABST   = S("Abst",   fontName="Times-Italic",     fontSize=9,  leading=12,
+           alignment=TA_JUSTIFY, spaceAfter=5)
+SEC    = S("Sec",    fontName="Times-Bold",        fontSize=10, leading=13,
+           spaceBefore=10, spaceAfter=3, alignment=TA_CENTER)
+SSEC   = S("SSec",   fontName="Times-BoldItalic", fontSize=9,  leading=12,
+           spaceBefore=7, spaceAfter=2)
+SSSEC  = S("SSSec",  fontName="Times-Italic",     fontSize=9,  leading=12,
+           spaceBefore=4, spaceAfter=2)
+CODE   = S("Code",   fontName="Courier",           fontSize=7,  leading=9,
            backColor=colors.HexColor("#f6f6f6"),
-           borderColor=colors.HexColor("#cccccc"), borderWidth=0.5,
-           borderPadding=6, spaceBefore=4, spaceAfter=6)
-CAPTION= S("Caption",fontName="Times-Italic",       fontSize=10, leading=13,
-           alignment=TA_CENTER, spaceBefore=3, spaceAfter=10)
-TAB_CAP= S("TabCap", fontName="Times-Bold",         fontSize=10, leading=13,
-           alignment=TA_CENTER, spaceBefore=8, spaceAfter=3)
-REF    = S("Ref",    fontName="Times-Roman",         fontSize=10, leading=14,
-           leftIndent=0.3*inch, firstLineIndent=-0.3*inch, spaceAfter=3)
-TCELL  = S("TC",     fontName="Times-Roman",         fontSize=10, leading=13)
-TCELLH = S("TCH",    fontName="Times-Bold",          fontSize=10, leading=13)
-PAGE_N = S("PN",     fontName="Times-Roman",         fontSize=10, leading=13,
-           alignment=TA_CENTER)
+           borderColor=colors.HexColor("#cccccc"), borderWidth=0.4,
+           borderPadding=4, spaceBefore=3, spaceAfter=5)
+BULLET = S("Bullet", fontName="Times-Roman",       fontSize=9,  leading=12,
+           leftIndent=10, spaceAfter=2)
+CAPTION= S("Caption",fontName="Times-Italic",      fontSize=8,  leading=10,
+           alignment=TA_CENTER, spaceBefore=2, spaceAfter=8)
+TAB_CAP= S("TabCap", fontName="Times-Bold",        fontSize=8,  leading=10,
+           alignment=TA_CENTER, spaceBefore=6, spaceAfter=2)
+REF    = S("Ref",    fontName="Times-Roman",        fontSize=8,  leading=10,
+           leftIndent=12, firstLineIndent=-12, spaceAfter=2)
+TCELL  = S("TC",     fontName="Times-Roman",        fontSize=8,  leading=10)
+TCELLH = S("TCH",    fontName="Times-Bold",         fontSize=8,  leading=10)
 
 _fig_counter = [0]
+_sec_num     = [0]
 
+# ── helpers ────────────────────────────────────────────────────────────────────
 def _esc(t):
     return t.replace("&","&amp;").replace("<","&lt;").replace(">","&gt;")
 
@@ -91,7 +95,7 @@ def _inline(text):
     placeholders = {}
     def _save(m):
         k = f"\x00C{len(placeholders)}\x00"
-        placeholders[k] = '<font name="Courier" size="10" color="#8b0000">%s</font>' % _esc(m.group(1))
+        placeholders[k] = '<font name="Courier" size="8" color="#8b0000">%s</font>' % _esc(m.group(1))
         return k
     text = re.sub(r"`([^`]+)`", _save, text)
     text = _esc(text)
@@ -115,15 +119,15 @@ def _make_image(path, caption=None):
     try:
         img = Image(p)
         iw, ih = img.imageWidth, img.imageHeight
-        scale  = min(BODY_W / iw, 4.5 * inch / ih, 1.0)
+        scale  = min(COL_W / iw, 3.2 * inch / ih, 1.0)
         img.drawWidth  = iw * scale
         img.drawHeight = ih * scale
         img.hAlign = "CENTER"
-        items = [Spacer(1, 6), img]
+        items = [Spacer(1, 4), img]
         if caption:
             items.append(Paragraph(caption, CAPTION))
         else:
-            items.append(Spacer(1, 6))
+            items.append(Spacer(1, 4))
         return items
     except Exception:
         return [Paragraph(f"[{os.path.basename(path)}]", CAPTION)]
@@ -141,7 +145,7 @@ def _make_table(lines):
     for r in rows:
         while len(r) < ncols:
             r.append("")
-    cw = BODY_W / ncols
+    cw = COL_W / ncols
     data = []
     for ri, r in enumerate(rows):
         st = TCELLH if ri == 0 else TCELL
@@ -149,70 +153,87 @@ def _make_table(lines):
     t = Table(data, colWidths=[cw]*ncols, repeatRows=1)
     t.setStyle(TableStyle([
         ("BACKGROUND",    (0,0), (-1,0),  colors.HexColor("#d0d8e8")),
-        ("GRID",          (0,0), (-1,-1), 0.4, colors.HexColor("#999999")),
-        ("ROWBACKGROUNDS",(0,1), (-1,-1), [colors.white, colors.HexColor("#f4f6fb")]),
+        ("GRID",          (0,0), (-1,-1), 0.3, colors.HexColor("#aaaaaa")),
+        ("ROWBACKGROUNDS",(0,1), (-1,-1), [colors.white, colors.HexColor("#f2f4f9")]),
         ("VALIGN",        (0,0), (-1,-1), "TOP"),
-        ("TOPPADDING",    (0,0), (-1,-1), 4),
-        ("BOTTOMPADDING", (0,0), (-1,-1), 4),
-        ("LEFTPADDING",   (0,0), (-1,-1), 6),
+        ("TOPPADDING",    (0,0), (-1,-1), 3),
+        ("BOTTOMPADDING", (0,0), (-1,-1), 3),
+        ("LEFTPADDING",   (0,0), (-1,-1), 4),
     ]))
     return t
 
-# ── header / footer ────────────────────────────────────────────────────────────
-_page_num = [0]
+# ── page callbacks ─────────────────────────────────────────────────────────────
+def _cover_cb(canvas, doc):
+    pass  # no header/footer on cover
 
-def _on_page(canvas, doc):
-    _page_num[0] = doc.page
+def _body_cb(canvas, doc):
     canvas.saveState()
-    if doc.page > 1:
-        canvas.setFont("Times-Roman", 9)
-        canvas.setFillColor(colors.HexColor("#444444"))
-        canvas.drawString(LM, PH - TM + 16,
-            "Real-Time Vehicle Telemetry ECU Simulator")
-        canvas.drawRightString(PW - RM, PH - TM + 16,
-            "Dharm Mehta")
-        canvas.setStrokeColor(colors.HexColor("#888888"))
-        canvas.setLineWidth(0.4)
-        canvas.line(LM, PH - TM + 12, PW - RM, PH - TM + 12)
-        canvas.line(LM, BM - 10, PW - RM, BM - 10)
-        canvas.setFont("Times-Roman", 9)
-        canvas.drawCentredString(PW/2, BM - 20, str(doc.page))
+    canvas.setFont("Times-Roman", 8)
+    canvas.setFillColor(colors.HexColor("#444444"))
+    canvas.setStrokeColor(colors.HexColor("#888888"))
+    canvas.setLineWidth(0.4)
+    # header
+    canvas.line(LM, PH - TM + 10, PW - RM, PH - TM + 10)
+    canvas.drawString(LM, PH - TM + 13, "Real-Time Vehicle Telemetry ECU Simulator")
+    canvas.drawRightString(PW - RM, PH - TM + 13, "Dharm Mehta")
+    # footer
+    canvas.line(LM, BM - 8, PW - RM, BM - 8)
+    canvas.drawCentredString(PW / 2, BM - 18, str(doc.page))
     canvas.restoreState()
+
+# ── document setup ─────────────────────────────────────────────────────────────
+def _build_doc():
+    doc = BaseDocTemplate(
+        OUTPUT_PDF, pagesize=letter,
+        leftMargin=LM, rightMargin=RM,
+        topMargin=TM,  bottomMargin=BM,
+        title="Real-Time Vehicle Telemetry ECU Simulator",
+        author="Dharm Mehta",
+    )
+    # cover: single full-width frame
+    cover_frame = Frame(LM, BM, PW - LM - RM, PH - TM - BM, id="cover")
+    # body: two columns
+    col1 = Frame(LM,                    BM, COL_W, PH - TM - BM, id="col1")
+    col2 = Frame(LM + COL_W + COL_GAP, BM, COL_W, PH - TM - BM, id="col2")
+
+    doc.addPageTemplates([
+        PageTemplate(id="Cover",     frames=[cover_frame], onPage=_cover_cb),
+        PageTemplate(id="TwoColumn", frames=[col1, col2],  onPage=_body_cb),
+    ])
+    return doc
 
 # ── cover page ─────────────────────────────────────────────────────────────────
 def cover_page():
     items = []
     items.append(Spacer(1, 1.8 * inch))
-    items.append(Paragraph(
-        "Real-Time Vehicle Telemetry ECU Simulator",
-        TITLE))
+    items.append(Paragraph("Real-Time Vehicle Telemetry ECU Simulator", CVR_TITLE))
     items.append(Spacer(1, 2.5 * inch))
-    items.append(Paragraph("Submitted To:", SUBM))
-    items.append(Spacer(1, 0.15 * inch))
-    items.append(Paragraph("Embedded Systems / Real-Time Systems", SUBM_B))
-    items.append(Paragraph("Northeastern University", SUBM))
+    items.append(Paragraph("Submitted To:", CVR_SUB))
+    items.append(Spacer(1, 0.12 * inch))
+    items.append(Paragraph("Embedded Systems / Real-Time Systems", CVR_SUBB))
+    items.append(Paragraph("Northeastern University", CVR_SUB))
     items.append(Spacer(1, 1.5 * inch))
-    items.append(Paragraph("Submitted By:", SUBM))
-    items.append(Spacer(1, 0.15 * inch))
-    items.append(Paragraph("Dharm Mehta", SUBM_B))
-    items.append(Paragraph("mehta.dhar@northeastern.edu", SUBM))
+    items.append(Paragraph("Submitted By:", CVR_SUB))
+    items.append(Spacer(1, 0.12 * inch))
+    items.append(Paragraph("Dharm Mehta", CVR_SUBB))
+    items.append(Paragraph("mehta.dhar@northeastern.edu", CVR_SUB))
+    items.append(NextPageTemplate("TwoColumn"))
     items.append(PageBreak())
     return items
 
 # ── markdown parser ────────────────────────────────────────────────────────────
 _SKIP = {"table of contents"}
-_sec_num = [0]
 
 def parse(md_text):
-    story   = []
-    lines   = md_text.splitlines()
-    n       = len(lines)
-    i       = 0
-    in_code = False
-    code_buf= []
-    in_tbl  = False
-    tbl_buf = []
-    in_abst = False
+    story      = []
+    lines      = md_text.splitlines()
+    n          = len(lines)
+    i          = 0
+    in_code    = False
+    code_buf   = []
+    in_tbl     = False
+    tbl_buf    = []
+    in_abst    = False
     skip_block = False
 
     def flush_tbl():
@@ -220,9 +241,9 @@ def parse(md_text):
         if tbl_buf:
             t = _make_table(tbl_buf)
             if t:
-                story.append(Spacer(1, 4))
+                story.append(Spacer(1, 3))
                 story.append(t)
-                story.append(Spacer(1, 6))
+                story.append(Spacer(1, 5))
         in_tbl  = False
         tbl_buf = []
 
@@ -256,19 +277,19 @@ def parse(md_text):
 
         # HR
         if line in ("---", "***", "___"):
-            story.append(HRFlowable(width="100%", thickness=0.5,
+            story.append(HRFlowable(width="100%", thickness=0.3,
                          color=colors.HexColor("#bbbbbb"),
-                         spaceAfter=6, spaceBefore=6))
+                         spaceAfter=4, spaceBefore=4))
             i += 1; continue
 
-        # skip block check
+        # skip block
         if skip_block:
             if line.startswith("## ") or line.startswith("# "):
                 skip_block = False
             else:
                 i += 1; continue
 
-        # H1 — skip the title (already on cover)
+        # H1 — skip (on cover)
         if re.match(r"^# [^#]", line):
             i += 1; continue
 
@@ -281,11 +302,11 @@ def parse(md_text):
                 i += 1; continue
             in_abst = (low == "abstract")
             if in_abst:
-                story.append(Paragraph("Abstract", ABST_H))
+                story.append(Paragraph("A<font size='8'>BSTRACT</font>", SEC))
                 i += 1; continue
             in_abst = False
             _sec_num[0] += 1
-            story.append(Paragraph(f"{_sec_num[0]}.&nbsp;&nbsp;{_inline(text)}", SEC))
+            story.append(Paragraph(f"{_sec_num[0]}.&nbsp;&nbsp;{_inline(text).upper()}", SEC))
             i += 1; continue
 
         # H3
@@ -308,10 +329,10 @@ def parse(md_text):
 
         # blank
         if not line:
-            story.append(Spacer(1, 4))
+            story.append(Spacer(1, 3))
             i += 1; continue
 
-        # meta lines — skip (already on cover)
+        # skip meta lines (Student / Email / Course / Institution / Date)
         if re.match(r"^\*\*(Student|Email|Course|Institution|Date)\b", line):
             i += 1; continue
 
@@ -320,7 +341,7 @@ def parse(md_text):
             story.append(Paragraph(re.sub(r"\*\*", "", line), TAB_CAP))
             i += 1; continue
 
-        # reference list item (starts with number+dot)
+        # reference list
         if re.match(r"^\d+\.\s+", line) and _sec_num[0] >= 9:
             story.append(Paragraph(_inline(line), REF))
             i += 1; continue
@@ -329,8 +350,7 @@ def parse(md_text):
         num_m = re.match(r"^(\d+)\.\s+(.*)", line)
         if num_m:
             story.append(Paragraph(
-                f"{num_m.group(1)}.&nbsp;&nbsp;{_inline(num_m.group(2))}",
-                BULLET))
+                f"{num_m.group(1)}.&nbsp;&nbsp;{_inline(num_m.group(2))}", BULLET))
             i += 1; continue
 
         # bullet
@@ -346,7 +366,7 @@ def parse(md_text):
         for fm in re.finditer(r"Figure\s+\d+\s*\(`?([^`)]+\.png)`?\)", line):
             _fig_counter[0] += 1
             fname = fm.group(1)
-            cap   = (f"Figure {_fig_counter[0]}: "
+            cap   = (f"Fig. {_fig_counter[0]}: "
                      f"{os.path.basename(fname).replace('_',' ').replace('.png','').title()}")
             for fl in _make_image(fname, cap):
                 story.append(fl)
@@ -362,19 +382,9 @@ def main():
     with open(REPORT_MD) as f:
         md = f.read()
 
-    doc = SimpleDocTemplate(
-        OUTPUT_PDF,
-        pagesize=letter,
-        leftMargin=LM, rightMargin=RM,
-        topMargin=TM,  bottomMargin=BM,
-        title="Real-Time Vehicle Telemetry ECU Simulator",
-        author="Dharm Mehta",
-    )
-
-    story  = cover_page()
-    story += parse(md)
-
-    doc.build(story, onFirstPage=_on_page, onLaterPages=_on_page)
+    doc   = _build_doc()
+    story = cover_page() + parse(md)
+    doc.build(story)
     print(f"PDF written: {OUTPUT_PDF}")
 
 if __name__ == "__main__":
